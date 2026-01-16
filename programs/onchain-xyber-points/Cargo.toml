@@ -1,0 +1,32 @@
+[package]
+name = "onchain-xyber-points"
+version = "0.1.0"
+description = "Created with Anchor"
+edition = "2021"
+
+[lints.rust]
+unexpected_cfgs = { level = "allow", check-cfg = ['cfg(target_os, values("solana"))'] }
+
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "onchain_xyber_points"
+
+[features]
+default = []
+localnet = []
+cpi = ["no-entrypoint"]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+idl-build = ["anchor-spl/idl-build", "anchor-lang/idl-build"]
+anchor-debug = []
+custom-heap = []
+custom-panic = []
+
+
+[dependencies]
+anchor-lang = { version = "0.32.1", features = ["init-if-needed"] }
+anchor-spl = { version = "0.32.1", features = [] }
+spl-token-2022 = "10"
+
