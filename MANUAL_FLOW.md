@@ -45,9 +45,7 @@ anchor build -- --features localnet
 Deploy the onchain-xyber-points program:
 
 ```bash
-anchor deploy --provider.cluster ${CLUSTER} --program-name onchain_xyber_points --program-keypair ${CLUSTER}/xyber-points.json
-sleep 2
-anchor idl init --provider.cluster ${CLUSTER} --filepath target/idl/onchain_xyber_points.json $(solana address -k ${CLUSTER}/xyber-points.json)
+anchor deploy --provider.wallet ${CLUSTER}/deployer.json --provider.cluster ${CLUSTER} --program-name onchain_xyber_points --program-keypair ${CLUSTER}/xyber-points.json
 ```
 
 ### 3. Setup: Airdrop SOL to Wallets
