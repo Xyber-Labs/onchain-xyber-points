@@ -11,7 +11,7 @@ This document contains the complete deployment flow for the onchain-xyber-points
 ## Local Validator Setup
 
 ```bash
-export CLUSTER=devnet
+export CLUSTER=localnet
 
 if [[ "$CLUSTER" == "localnet" ]]; then
     export SCLUSTER=localhost
@@ -37,7 +37,7 @@ Keep this terminal open.
 Build the program:
 
 ```bash
-anchor build
+anchor build -- --features localnet
 ```
 
 ### 2. Deploy the Program

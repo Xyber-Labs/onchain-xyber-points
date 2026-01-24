@@ -1,5 +1,5 @@
 {
-  "address": "DYNpaq7XujscK29FYuQD5h8rGtxPAwNPYiB8vbuQe4R7",
+  "address": "ALY2aGdTPNKLn3SnMgQsznyuYHFV7NFnZt6vHHqQhYd8",
   "metadata": {
     "name": "onchain_xyber_points",
     "version": "0.1.0",
@@ -58,6 +58,43 @@
                   102,
                   105,
                   103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "nonce",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  120,
+                  121,
+                  98,
+                  101,
+                  114,
+                  45,
+                  112,
+                  111,
+                  105,
+                  110,
+                  116,
+                  115,
+                  45,
+                  48
+                ]
+              },
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  111,
+                  110,
+                  99,
+                  101
                 ]
               }
             ]
@@ -176,6 +213,43 @@
                   102,
                   105,
                   103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "nonce",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  120,
+                  121,
+                  98,
+                  101,
+                  114,
+                  45,
+                  112,
+                  111,
+                  105,
+                  110,
+                  116,
+                  115,
+                  45,
+                  48
+                ]
+              },
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  111,
+                  110,
+                  99,
+                  101
                 ]
               }
             ]
@@ -301,6 +375,10 @@
         {
           "name": "amount",
           "type": "u64"
+        },
+        {
+          "name": "nonce",
+          "type": "u64"
         }
       ]
     }
@@ -317,6 +395,47 @@
         250,
         204,
         130
+      ]
+    },
+    {
+      "name": "Nonce",
+      "discriminator": [
+        143,
+        197,
+        147,
+        95,
+        106,
+        165,
+        50,
+        43
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "Initialized",
+      "discriminator": [
+        208,
+        213,
+        115,
+        98,
+        115,
+        82,
+        201,
+        209
+      ]
+    },
+    {
+      "name": "PointsMinted",
+      "discriminator": [
+        194,
+        74,
+        48,
+        58,
+        130,
+        225,
+        18,
+        43
       ]
     }
   ],
@@ -340,6 +459,11 @@
       "code": 6003,
       "name": "InvalidDecimals",
       "msg": "Invalid decimals: mint decimals do not match expected"
+    },
+    {
+      "code": 6004,
+      "name": "InvalidNonce",
+      "msg": "Invalid nonce: provided nonce does not match expected"
     }
   ],
   "types": [
@@ -362,6 +486,62 @@
           }
         ]
       }
+    },
+    {
+      "name": "Initialized",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "minter",
+            "type": "pubkey"
+          },
+          {
+            "name": "points_mint",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Nonce",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "value",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PointsMinted",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "recipient",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "nonce",
+            "type": "u64"
+          }
+        ]
+      }
     }
   ],
   "constants": [
@@ -373,7 +553,12 @@
     {
       "name": "DEPLOYER",
       "type": "pubkey",
-      "value": "8dabTUxUZCoH42Gq8r9jTyeAzjqVtj2PVS3yvPQLrueS"
+      "value": "2PQFnL3737LG5qhFEu3G379TSfr3rYhWGVgVvmch1XTG"
+    },
+    {
+      "name": "NONCE_SEED",
+      "type": "bytes",
+      "value": "[110, 111, 110, 99, 101]"
     },
     {
       "name": "POINTS_MINT_SEED",

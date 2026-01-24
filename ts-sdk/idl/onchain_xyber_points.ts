@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/onchain_xyber_points.json`.
  */
 export type OnchainXyberPoints = {
-  "address": "DYNpaq7XujscK29FYuQD5h8rGtxPAwNPYiB8vbuQe4R7",
+  "address": "ALY2aGdTPNKLn3SnMgQsznyuYHFV7NFnZt6vHHqQhYd8",
   "metadata": {
     "name": "onchainXyberPoints",
     "version": "0.1.0",
@@ -64,6 +64,43 @@ export type OnchainXyberPoints = {
                   102,
                   105,
                   103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "nonce",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  120,
+                  121,
+                  98,
+                  101,
+                  114,
+                  45,
+                  112,
+                  111,
+                  105,
+                  110,
+                  116,
+                  115,
+                  45,
+                  48
+                ]
+              },
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  111,
+                  110,
+                  99,
+                  101
                 ]
               }
             ]
@@ -182,6 +219,43 @@ export type OnchainXyberPoints = {
                   102,
                   105,
                   103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "nonce",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  120,
+                  121,
+                  98,
+                  101,
+                  114,
+                  45,
+                  112,
+                  111,
+                  105,
+                  110,
+                  116,
+                  115,
+                  45,
+                  48
+                ]
+              },
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  111,
+                  110,
+                  99,
+                  101
                 ]
               }
             ]
@@ -307,6 +381,10 @@ export type OnchainXyberPoints = {
         {
           "name": "amount",
           "type": "u64"
+        },
+        {
+          "name": "nonce",
+          "type": "u64"
         }
       ]
     }
@@ -323,6 +401,47 @@ export type OnchainXyberPoints = {
         250,
         204,
         130
+      ]
+    },
+    {
+      "name": "nonce",
+      "discriminator": [
+        143,
+        197,
+        147,
+        95,
+        106,
+        165,
+        50,
+        43
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "initialized",
+      "discriminator": [
+        208,
+        213,
+        115,
+        98,
+        115,
+        82,
+        201,
+        209
+      ]
+    },
+    {
+      "name": "pointsMinted",
+      "discriminator": [
+        194,
+        74,
+        48,
+        58,
+        130,
+        225,
+        18,
+        43
       ]
     }
   ],
@@ -346,6 +465,11 @@ export type OnchainXyberPoints = {
       "code": 6003,
       "name": "invalidDecimals",
       "msg": "Invalid decimals: mint decimals do not match expected"
+    },
+    {
+      "code": 6004,
+      "name": "invalidNonce",
+      "msg": "Invalid nonce: provided nonce does not match expected"
     }
   ],
   "types": [
@@ -368,6 +492,62 @@ export type OnchainXyberPoints = {
           }
         ]
       }
+    },
+    {
+      "name": "initialized",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "minter",
+            "type": "pubkey"
+          },
+          {
+            "name": "pointsMint",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "nonce",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "value",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "pointsMinted",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "recipient",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "nonce",
+            "type": "u64"
+          }
+        ]
+      }
     }
   ],
   "constants": [
@@ -379,7 +559,12 @@ export type OnchainXyberPoints = {
     {
       "name": "deployer",
       "type": "pubkey",
-      "value": "8dabTUxUZCoH42Gq8r9jTyeAzjqVtj2PVS3yvPQLrueS"
+      "value": "2PQFnL3737LG5qhFEu3G379TSfr3rYhWGVgVvmch1XTG"
+    },
+    {
+      "name": "nonceSeed",
+      "type": "bytes",
+      "value": "[110, 111, 110, 99, 101]"
     },
     {
       "name": "pointsMintSeed",

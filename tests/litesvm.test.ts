@@ -168,11 +168,15 @@ describe("onchain-xyber-points", () => {
 
   it("Should mint points to user1", async () => {
     const amount = new anchor.BN(1000);
+    const [noncePda] = sdk.getNoncePda();
+    const nonceAccountInfo = client.getAccount(noncePda);
+    const nonceAccount = program.coder.accounts.decode("nonce", Buffer.from(nonceAccountInfo.data));
 
     const tx = await sdk.mintPointsTx({
       authority: minterKeypair.publicKey,
       recipient: user1Keypair.publicKey,
       amount,
+      nonce: nonceAccount.value,
     });
 
     const { signature, computeUnitsConsumed } = sendTxWithMeta(client, minterKeypair.publicKey, [minterKeypair], tx);
@@ -185,11 +189,15 @@ describe("onchain-xyber-points", () => {
 
   it("Should mint points to user2", async () => {
     const amount = new anchor.BN(500);
+    const [noncePda] = sdk.getNoncePda();
+    const nonceAccountInfo = client.getAccount(noncePda);
+    const nonceAccount = program.coder.accounts.decode("nonce", Buffer.from(nonceAccountInfo.data));
 
     const tx = await sdk.mintPointsTx({
       authority: minterKeypair.publicKey,
       recipient: user2Keypair.publicKey,
       amount,
+      nonce: nonceAccount.value,
     });
 
     const { signature, computeUnitsConsumed } = sendTxWithMeta(client, minterKeypair.publicKey, [minterKeypair], tx);
@@ -202,11 +210,15 @@ describe("onchain-xyber-points", () => {
 
   it("Should reject minting with wrong authority", async () => {
     const amount = new anchor.BN(500);
+    const [noncePda] = sdk.getNoncePda();
+    const nonceAccountInfo = client.getAccount(noncePda);
+    const nonceAccount = program.coder.accounts.decode("nonce", Buffer.from(nonceAccountInfo.data));
 
     const tx = await sdk.mintPointsTx({
       authority: adminKeypair.publicKey,
       recipient: user1Keypair.publicKey,
       amount,
+      nonce: nonceAccount.value,
     });
 
     await doAndCheckError(
@@ -214,6 +226,28 @@ describe("onchain-xyber-points", () => {
       "Unauthorized"
     );
     console.log("Minting with wrong authority correctly rejected");
+  });
+
+  it("Should reject minting with invalid nonce", async () => {
+    const amount = new anchor.BN(100);
+    const [noncePda] = sdk.getNoncePda();
+    const nonceAccountInfo = client.getAccount(noncePda);
+    const nonceAccount = program.coder.accounts.decode("nonce", Buffer.from(nonceAccountInfo.data));
+
+    const badNonce = nonceAccount.value.add(new anchor.BN(1));
+
+    const tx = await sdk.mintPointsTx({
+      authority: minterKeypair.publicKey,
+      recipient: user1Keypair.publicKey,
+      amount,
+      nonce: badNonce,
+    });
+
+    await doAndCheckError(
+      Promise.resolve().then(() => sendTx(client, minterKeypair.publicKey, [minterKeypair], tx)),
+      "InvalidNonce"
+    );
+    console.log("Minting with invalid nonce correctly rejected");
   });
 
   it("Should transfer points between users", async () => {

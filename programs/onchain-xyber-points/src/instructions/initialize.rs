@@ -1,7 +1,11 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token_interface::{Mint, Token2022};
 
-use crate::{DEPLOYER, errors::ErrorCode, POINTS_MINT_SEED, SEED_ROOT};
+use crate::{
+    errors::ErrorCode,
+    state::{Nonce, NONCE_SEED},
+    DEPLOYER, POINTS_MINT_SEED, SEED_ROOT,
+};
 
 #[constant]
 pub const CONFIG_SEED: &[u8] = b"config";
@@ -40,6 +44,12 @@ pub struct Initialize<'info> {
         seeds = [SEED_ROOT, CONFIG_SEED], bump
     )]
     pub config: Account<'info, Config>,
+
+    #[account(
+        init_if_needed, payer = authority, space = 8 + Nonce::INIT_SPACE,
+        seeds = [SEED_ROOT, NONCE_SEED], bump
+    )]
+    pub nonce: Account<'info, Nonce>,
 
     #[account(
         init_if_needed, payer = authority,

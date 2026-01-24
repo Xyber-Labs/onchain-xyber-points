@@ -5,23 +5,32 @@ use anchor_spl::{
     token_interface::{Mint, MintTo, Token2022, TokenAccount},
 };
 
-use crate::{errors::ErrorCode, instructions::initialize::Config, POINTS_MINT_SEED, SEED_ROOT};
+use crate::{
+    errors::ErrorCode,
+    instructions::initialize::Config,
+    state::{Nonce, NONCE_SEED},
+    POINTS_MINT_SEED, SEED_ROOT,
+};
 
 #[event]
 pub struct PointsMinted {
-    recipient: Pubkey,
-    amount: u64,
-    mint: Pubkey,
+    pub recipient: Pubkey,
+    pub amount: u64,
+    pub mint: Pubkey,
+    pub nonce: u64,
 }
 
 #[derive(Accounts)]
-#[instruction(amount: u64)]
+#[instruction(amount: u64, nonce: u64)]
 pub struct MintPoints<'info> {
     #[account(mut, address = config.minter @ ErrorCode::Unauthorized)]
     pub authority: Signer<'info>,
 
     #[account(seeds = [SEED_ROOT, b"config"], bump)]
     pub config: Account<'info, Config>,
+
+    #[account(mut, seeds = [SEED_ROOT, NONCE_SEED], bump)]
+    pub nonce: Account<'info, Nonce>,
 
     #[account(
         mut, seeds = [SEED_ROOT, POINTS_MINT_SEED], bump,
@@ -46,7 +55,9 @@ pub struct MintPoints<'info> {
     pub system_program: Program<'info, System>,
 }
 
-pub fn mint_points(ctx: Context<MintPoints>, amount: u64) -> Result<()> {
+pub fn mint_points(ctx: Context<MintPoints>, amount: u64, nonce: u64) -> Result<()> {
+    require!(ctx.accounts.nonce.value == nonce, ErrorCode::InvalidNonce);
+
     let signer_seeds: &[&[&[u8]]] = &[&[SEED_ROOT, POINTS_MINT_SEED, &[ctx.bumps.points_mint]]];
 
     mint_to(
@@ -62,10 +73,13 @@ pub fn mint_points(ctx: Context<MintPoints>, amount: u64) -> Result<()> {
         amount,
     )?;
 
+    ctx.accounts.nonce.value += 1;
+
     emit!(PointsMinted {
         recipient: ctx.accounts.recipient.key(),
         amount,
-        mint: ctx.accounts.points_mint.key()
+        mint: ctx.accounts.points_mint.key(),
+        nonce,
     });
 
     Ok(())

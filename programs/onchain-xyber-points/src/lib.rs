@@ -35,7 +35,7 @@ pub mod onchain_xyber_points {
         instructions::initialize(ctx, new_admin, new_minter)
     }
 
-    pub fn mint_points(ctx: Context<MintPoints>, amount: u64) -> Result<()> {
-        instructions::mint_points(ctx, amount)
+    pub fn mint_points(ctx: Context<MintPoints>, amount: u64, nonce: u64) -> Result<()> {
+        instructions::mint_points(ctx, amount, nonce)
     }
 }

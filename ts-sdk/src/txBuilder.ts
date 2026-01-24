@@ -50,6 +50,10 @@ export class TxBuilder {
     return this.getPda(["points_mint"]);
   }
 
+  getNoncePda(): [web3.PublicKey, number] {
+    return this.getPda(["nonce"]);
+  }
+
   // ========== Initialize ==========
 
   async initializeIx(args: {
@@ -80,9 +84,10 @@ export class TxBuilder {
     authority: web3.PublicKey;
     recipient: web3.PublicKey;
     amount: BN;
+    nonce: BN;
   }): Promise<web3.TransactionInstruction> {
     return await this.program.methods
-      .mintPoints(args.amount)
+      .mintPoints(args.amount, args.nonce)
       .accounts({
         authority: args.authority,
         recipient: args.recipient,
@@ -94,6 +99,7 @@ export class TxBuilder {
     authority: web3.PublicKey;
     recipient: web3.PublicKey;
     amount: BN;
+    nonce: BN;
   }): Promise<web3.Transaction> {
     const ix = await this.mintPointsIx(args);
     return new web3.Transaction().add(ix);
