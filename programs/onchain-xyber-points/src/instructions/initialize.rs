@@ -16,6 +16,13 @@ pub struct Config {
     pub points_mint: Pubkey,
 }
 
+#[event]
+pub struct Initialized {
+    pub admin: Pubkey,
+    pub minter: Pubkey,
+    pub points_mint: Pubkey,
+}
+
 #[derive(Accounts)]
 #[instruction(new_admin: Pubkey, new_minter: Pubkey)]
 pub struct Initialize<'info> {
@@ -52,5 +59,11 @@ pub fn initialize(ctx: Context<Initialize>, new_admin: Pubkey, new_minter: Pubke
     ctx.accounts.config.admin = new_admin;
     ctx.accounts.config.minter = new_minter;
     ctx.accounts.config.points_mint = ctx.accounts.points_mint.key();
+    let config = &ctx.accounts.config;
+    emit!(Initialized {
+        admin: config.admin,
+        minter: config.minter,
+        points_mint: config.points_mint,
+    });
     Ok(())
 }

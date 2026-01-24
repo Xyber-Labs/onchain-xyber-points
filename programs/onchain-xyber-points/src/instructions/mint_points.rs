@@ -7,6 +7,13 @@ use anchor_spl::{
 
 use crate::{errors::ErrorCode, instructions::initialize::Config, POINTS_MINT_SEED, SEED_ROOT};
 
+#[event]
+pub struct PointsMinted {
+    recipient: Pubkey,
+    amount: u64,
+    mint: Pubkey,
+}
+
 #[derive(Accounts)]
 #[instruction(amount: u64)]
 pub struct MintPoints<'info> {
@@ -54,6 +61,12 @@ pub fn mint_points(ctx: Context<MintPoints>, amount: u64) -> Result<()> {
         ),
         amount,
     )?;
+
+    emit!(PointsMinted {
+        recipient: ctx.accounts.recipient.key(),
+        amount,
+        mint: ctx.accounts.points_mint.key()
+    });
 
     Ok(())
 }
