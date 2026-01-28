@@ -50,8 +50,21 @@ export class TxBuilder {
     return this.getPda(["points_mint"]);
   }
 
-  getNoncePda(): [web3.PublicKey, number] {
-    return this.getPda(["nonce"]);
+  getNoncePda(recipient: web3.PublicKey): [web3.PublicKey, number] {
+    return this.getPda(["nonce", recipient]);
+  }
+
+  async getNonce(recipient: web3.PublicKey): Promise<BN> {
+    const [noncePda] = this.getNoncePda(recipient);
+    try {
+      const nonceAccount = await this.program.account.nonce.fetchNullable(noncePda);
+      return nonceAccount ? nonceAccount.value : new BN(0);
+    } catch (e: any) {
+      if (e.message?.includes("Could not find")) {
+        return new BN(0);
+      }
+      throw e;
+    }
   }
 
   // ========== Initialize ==========

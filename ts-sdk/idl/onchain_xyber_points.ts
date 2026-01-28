@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/onchain_xyber_points.json`.
  */
 export type OnchainXyberPoints = {
-  "address": "ALY2aGdTPNKLn3SnMgQsznyuYHFV7NFnZt6vHHqQhYd8",
+  "address": "oxp5daG6BinG1AL2W83RQmmN8tcXJqrqy3bYprLMRV8",
   "metadata": {
     "name": "onchainXyberPoints",
     "version": "0.1.0",
@@ -64,43 +64,6 @@ export type OnchainXyberPoints = {
                   102,
                   105,
                   103
-                ]
-              }
-            ]
-          }
-        },
-        {
-          "name": "nonce",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  120,
-                  121,
-                  98,
-                  101,
-                  114,
-                  45,
-                  112,
-                  111,
-                  105,
-                  110,
-                  116,
-                  115,
-                  45,
-                  48
-                ]
-              },
-              {
-                "kind": "const",
-                "value": [
-                  110,
-                  111,
-                  110,
-                  99,
-                  101
                 ]
               }
             ]
@@ -257,6 +220,10 @@ export type OnchainXyberPoints = {
                   99,
                   101
                 ]
+              },
+              {
+                "kind": "account",
+                "path": "recipient"
               }
             ]
           }
@@ -559,7 +526,7 @@ export type OnchainXyberPoints = {
     {
       "name": "deployer",
       "type": "pubkey",
-      "value": "2PQFnL3737LG5qhFEu3G379TSfr3rYhWGVgVvmch1XTG"
+      "value": "keeppCujRWx7HW8AgCL3F9CfaAM2hRKvWvNVo6iGToE"
     },
     {
       "name": "nonceSeed",

@@ -26,13 +26,12 @@ async function main() {
 
     const [configPda] = sdk.getConfigPda();
     const [pointsMintPda] = sdk.getPointsMintPda();
-    const [noncePda] = sdk.getNoncePda();
 
     console.log("  Config PDA:", configPda.toBase58());
     console.log("  Points Mint PDA:", pointsMintPda.toBase58());
 
-    const nonceAccount = await program.account.nonce.fetch(noncePda);
-    console.log("  Current nonce:", nonceAccount.value.toString());
+    const nonce = await sdk.getNonce(recipient);
+    console.log("  Current nonce for recipient:", nonce.toString());
 
     console.log("\nSending transaction...");
 
@@ -40,7 +39,7 @@ async function main() {
       authority: minterKeypair.publicKey,
       recipient,
       amount,
-      nonce: nonceAccount.value,
+      nonce,
     });
 
     const signature = await provider.sendAndConfirm(tx, [minterKeypair]);

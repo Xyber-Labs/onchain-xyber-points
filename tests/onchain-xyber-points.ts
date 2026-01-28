@@ -94,11 +94,13 @@ describe("onchain-xyber-points", () => {
 
   it("Should mint points to user1", async () => {
     const amount = new anchor.BN(1000);
+    const nonce = await sdk.getNonce(user1Keypair.publicKey);
 
     const signature = await sdk.mintPoints({
       authority: minterKeypair.publicKey,
       recipient: user1Keypair.publicKey,
       amount,
+      nonce,
       signers: [minterKeypair],
     });
 
@@ -109,11 +111,13 @@ describe("onchain-xyber-points", () => {
 
   it("Should mint points to user2", async () => {
     const amount = new anchor.BN(500);
+    const nonce = await sdk.getNonce(user2Keypair.publicKey);
 
     const signature = await sdk.mintPoints({
       authority: minterKeypair.publicKey,
       recipient: user2Keypair.publicKey,
       amount,
+      nonce,
       signers: [minterKeypair],
     });
 
@@ -124,12 +128,14 @@ describe("onchain-xyber-points", () => {
 
   it("Should reject minting with wrong authority", async () => {
     const amount = new anchor.BN(500);
+    const nonce = await sdk.getNonce(user1Keypair.publicKey);
 
     await doAndCheckError(
       sdk.mintPoints({
         authority: adminKeypair.publicKey,
         recipient: user1Keypair.publicKey,
         amount,
+        nonce,
         signers: [adminKeypair],
       }),
       "Unauthorized"

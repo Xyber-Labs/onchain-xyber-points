@@ -29,7 +29,10 @@ pub struct MintPoints<'info> {
     #[account(seeds = [SEED_ROOT, b"config"], bump)]
     pub config: Account<'info, Config>,
 
-    #[account(mut, seeds = [SEED_ROOT, NONCE_SEED], bump)]
+    #[account(
+        init_if_needed, payer = authority, space = 8 + Nonce::INIT_SPACE,
+        seeds = [SEED_ROOT, NONCE_SEED, recipient.key().as_ref()], bump
+    )]
     pub nonce: Account<'info, Nonce>,
 
     #[account(

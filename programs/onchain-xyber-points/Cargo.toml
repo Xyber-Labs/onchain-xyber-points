@@ -31,4 +31,5 @@ anchor-spl = { version = "0.32.1", features = [] }
 spl-token-2022 = { version = "10", default-features = false }
 spl-token-metadata-interface = "0.5"
 spl-type-length-value = "0.6"
+solana-security-txt = "1.1.2"
 

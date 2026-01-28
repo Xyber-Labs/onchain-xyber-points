@@ -36,6 +36,7 @@ export const OnchainXyberPointsSDK = {
       getConfigPda: txBuilder.getConfigPda.bind(txBuilder),
       getPointsMintPda: txBuilder.getPointsMintPda.bind(txBuilder),
       getNoncePda: txBuilder.getNoncePda.bind(txBuilder),
+      getNonce: txBuilder.getNonce.bind(txBuilder),
 
       // Initialize
       initializeIx: txBuilder.initializeIx.bind(txBuilder),

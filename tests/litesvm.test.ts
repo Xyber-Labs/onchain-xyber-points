@@ -86,6 +86,7 @@ describe("onchain-xyber-points", () => {
   before(async () => {
     client = fromWorkspace(".");
     provider = new LiteSVMProvider(client);
+    anchor.setProvider(provider);
     program = anchor.workspace.OnchainXyberPoints as Program<OnchainXyberPoints>;
     sdk = OnchainXyberPointsSDK.create(provider, program);
 
@@ -168,15 +169,13 @@ describe("onchain-xyber-points", () => {
 
   it("Should mint points to user1", async () => {
     const amount = new anchor.BN(1000);
-    const [noncePda] = sdk.getNoncePda();
-    const nonceAccountInfo = client.getAccount(noncePda);
-    const nonceAccount = program.coder.accounts.decode("nonce", Buffer.from(nonceAccountInfo.data));
+    const nonce = await sdk.getNonce(user1Keypair.publicKey);
 
     const tx = await sdk.mintPointsTx({
       authority: minterKeypair.publicKey,
       recipient: user1Keypair.publicKey,
       amount,
-      nonce: nonceAccount.value,
+      nonce,
     });
 
     const { signature, computeUnitsConsumed } = sendTxWithMeta(client, minterKeypair.publicKey, [minterKeypair], tx);
@@ -189,15 +188,13 @@ describe("onchain-xyber-points", () => {
 
   it("Should mint points to user2", async () => {
     const amount = new anchor.BN(500);
-    const [noncePda] = sdk.getNoncePda();
-    const nonceAccountInfo = client.getAccount(noncePda);
-    const nonceAccount = program.coder.accounts.decode("nonce", Buffer.from(nonceAccountInfo.data));
+    const nonce = await sdk.getNonce(user2Keypair.publicKey);
 
     const tx = await sdk.mintPointsTx({
       authority: minterKeypair.publicKey,
       recipient: user2Keypair.publicKey,
       amount,
-      nonce: nonceAccount.value,
+      nonce,
     });
 
     const { signature, computeUnitsConsumed } = sendTxWithMeta(client, minterKeypair.publicKey, [minterKeypair], tx);
@@ -210,15 +207,13 @@ describe("onchain-xyber-points", () => {
 
   it("Should reject minting with wrong authority", async () => {
     const amount = new anchor.BN(500);
-    const [noncePda] = sdk.getNoncePda();
-    const nonceAccountInfo = client.getAccount(noncePda);
-    const nonceAccount = program.coder.accounts.decode("nonce", Buffer.from(nonceAccountInfo.data));
+    const nonce = await sdk.getNonce(user1Keypair.publicKey);
 
     const tx = await sdk.mintPointsTx({
       authority: adminKeypair.publicKey,
       recipient: user1Keypair.publicKey,
       amount,
-      nonce: nonceAccount.value,
+      nonce,
     });
 
     await doAndCheckError(
@@ -230,11 +225,8 @@ describe("onchain-xyber-points", () => {
 
   it("Should reject minting with invalid nonce", async () => {
     const amount = new anchor.BN(100);
-    const [noncePda] = sdk.getNoncePda();
-    const nonceAccountInfo = client.getAccount(noncePda);
-    const nonceAccount = program.coder.accounts.decode("nonce", Buffer.from(nonceAccountInfo.data));
-
-    const badNonce = nonceAccount.value.add(new anchor.BN(1));
+    const nonce = await sdk.getNonce(user1Keypair.publicKey);
+    const badNonce = nonce.add(new anchor.BN(1));
 
     const tx = await sdk.mintPointsTx({
       authority: minterKeypair.publicKey,

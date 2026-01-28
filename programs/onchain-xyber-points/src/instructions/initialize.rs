@@ -3,15 +3,11 @@ use anchor_lang::{
     system_program::{transfer, Transfer},
 };
 use anchor_spl::token_interface::{
-    Mint, Token2022, token_metadata_initialize, TokenMetadataInitialize,
+    token_metadata_initialize, Mint, Token2022, TokenMetadataInitialize,
 };
 use spl_token_metadata_interface::state::TokenMetadata;
 
-use crate::{
-    DEPLOYER,
-    errors::ErrorCode,
-    POINTS_MINT_SEED, SEED_ROOT, state::{Nonce, NONCE_SEED},
-};
+use crate::{errors::ErrorCode, DEPLOYER, POINTS_MINT_SEED, SEED_ROOT};
 
 #[constant]
 pub const CONFIG_SEED: &[u8] = b"config";
@@ -53,12 +49,6 @@ pub struct Initialize<'info> {
         seeds = [SEED_ROOT, CONFIG_SEED], bump
     )]
     pub config: Account<'info, Config>,
-
-    #[account(
-        init_if_needed, payer = authority, space = 8 + Nonce::INIT_SPACE,
-        seeds = [SEED_ROOT, NONCE_SEED], bump
-    )]
-    pub nonce: Account<'info, Nonce>,
 
     #[account(
         init_if_needed, payer = authority,

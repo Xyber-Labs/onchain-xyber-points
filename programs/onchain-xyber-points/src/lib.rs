@@ -26,6 +26,15 @@ declare_id!("DYNpaq7XujscK29FYuQD5h8rGtxPAwNPYiB8vbuQe4R7");
 #[cfg(not(feature = "localnet"))]
 declare_id!("oxp5daG6BinG1AL2W83RQmmN8tcXJqrqy3bYprLMRV8");
 
+#[cfg(not(feature = "no-entrypoint"))]
+solana_security_txt::security_txt! {
+    name: "Onchain Xyber XP",
+    source_code: "https://github.com/Xyber-Labs/onchain-xyber-points",
+    project_url: "https://app.xyber.inc/watchtower",
+    contacts: "email:xykeeper@xyber.inc",
+    policy: "Please contact us if you've discovered a bug"
+}
+
 #[program]
 pub mod onchain_xyber_points {
     use super::*;
