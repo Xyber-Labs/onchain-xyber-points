@@ -10,4 +10,6 @@ pub enum ErrorCode {
     InvalidMintAuthority,
     #[msg("Invalid decimals: mint decimals do not match expected")]
     InvalidDecimals,
+    #[msg("Invalid nonce: provided nonce does not match expected")]
+    InvalidNonce,
 }

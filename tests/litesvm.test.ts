@@ -168,11 +168,15 @@ describe("onchain-xyber-points", () => {
 
   it("Should mint points to user1", async () => {
     const amount = new anchor.BN(1000);
+    const [noncePda] = sdk.getNoncePda();
+    const nonceAccountInfo = client.getAccount(noncePda);
+    const nonceAccount = program.coder.accounts.decode("nonce", Buffer.from(nonceAccountInfo.data));
 
     const tx = await sdk.mintPointsTx({
       authority: minterKeypair.publicKey,
       recipient: user1Keypair.publicKey,
       amount,
+      nonce: nonceAccount.value,
     });
 
     const { signature, computeUnitsConsumed } = sendTxWithMeta(client, minterKeypair.publicKey, [minterKeypair], tx);
@@ -185,11 +189,15 @@ describe("onchain-xyber-points", () => {
 
   it("Should mint points to user2", async () => {
     const amount = new anchor.BN(500);
+    const [noncePda] = sdk.getNoncePda();
+    const nonceAccountInfo = client.getAccount(noncePda);
+    const nonceAccount = program.coder.accounts.decode("nonce", Buffer.from(nonceAccountInfo.data));
 
     const tx = await sdk.mintPointsTx({
       authority: minterKeypair.publicKey,
       recipient: user2Keypair.publicKey,
       amount,
+      nonce: nonceAccount.value,
     });
 
     const { signature, computeUnitsConsumed } = sendTxWithMeta(client, minterKeypair.publicKey, [minterKeypair], tx);
@@ -202,11 +210,15 @@ describe("onchain-xyber-points", () => {
 
   it("Should reject minting with wrong authority", async () => {
     const amount = new anchor.BN(500);
+    const [noncePda] = sdk.getNoncePda();
+    const nonceAccountInfo = client.getAccount(noncePda);
+    const nonceAccount = program.coder.accounts.decode("nonce", Buffer.from(nonceAccountInfo.data));
 
     const tx = await sdk.mintPointsTx({
       authority: adminKeypair.publicKey,
       recipient: user1Keypair.publicKey,
       amount,
+      nonce: nonceAccount.value,
     });
 
     await doAndCheckError(
@@ -216,8 +228,30 @@ describe("onchain-xyber-points", () => {
     console.log("Minting with wrong authority correctly rejected");
   });
 
-  it("Should reject transferring points (non-transferable)", async () => {
-    const { getAssociatedTokenAddressSync, createTransferCheckedInstruction } = await import("@solana/spl-token");
+  it("Should reject minting with invalid nonce", async () => {
+    const amount = new anchor.BN(100);
+    const [noncePda] = sdk.getNoncePda();
+    const nonceAccountInfo = client.getAccount(noncePda);
+    const nonceAccount = program.coder.accounts.decode("nonce", Buffer.from(nonceAccountInfo.data));
+
+    const badNonce = nonceAccount.value.add(new anchor.BN(1));
+
+    const tx = await sdk.mintPointsTx({
+      authority: minterKeypair.publicKey,
+      recipient: user1Keypair.publicKey,
+      amount,
+      nonce: badNonce,
+    });
+
+    await doAndCheckError(
+      Promise.resolve().then(() => sendTx(client, minterKeypair.publicKey, [minterKeypair], tx)),
+      "InvalidNonce"
+    );
+    console.log("Minting with invalid nonce correctly rejected");
+  });
+
+  it("Should transfer points between users", async () => {
+    const { getAssociatedTokenAddressSync, createTransferCheckedInstruction, getAccount } = await import("@solana/spl-token");
 
     const [pointsMintPda] = sdk.getPointsMintPda();
 
@@ -235,12 +269,14 @@ describe("onchain-xyber-points", () => {
       TOKEN_2022_PROGRAM_ID
     );
 
+    const TRANSFER_AMOUNT = 100n;
+
     const transferIx = createTransferCheckedInstruction(
       user1Ata,
       pointsMintPda,
       user2Ata,
       user1Keypair.publicKey,
-      100,
+      TRANSFER_AMOUNT,
       0,
       [],
       TOKEN_2022_PROGRAM_ID
@@ -248,10 +284,37 @@ describe("onchain-xyber-points", () => {
 
     const tx = new anchor.web3.Transaction().add(transferIx);
 
-    await doAndCheckError(
-      Promise.resolve().then(() => sendTx(client, user1Keypair.publicKey, [user1Keypair], tx)),
-      "non-transferable"
-    );
-    console.log("Transfer correctly rejected (non-transferable mint)");
+    const { signature, computeUnitsConsumed } = sendTxWithMeta(client, user1Keypair.publicKey, [user1Keypair], tx);
+
+    console.log("Transfer succeeded");
+    console.log("Compute units consumed:", computeUnitsConsumed.toString());
+    console.log("Transfer signature:", signature);
+
+    const { unpackAccount } = await import("@solana/spl-token");
+
+    const user1AccountInfo = client.getAccount(user1Ata);
+    const user2AccountInfo = client.getAccount(user2Ata);
+
+    const user1Account = unpackAccount(user1Ata, {
+      data: Buffer.from(user1AccountInfo.data),
+      executable: user1AccountInfo.executable,
+      lamports: Number(user1AccountInfo.lamports),
+      owner: user1AccountInfo.owner,
+      rentEpoch: 0,
+    }, TOKEN_2022_PROGRAM_ID);
+
+    const user2Account = unpackAccount(user2Ata, {
+      data: Buffer.from(user2AccountInfo.data),
+      executable: user2AccountInfo.executable,
+      lamports: Number(user2AccountInfo.lamports),
+      owner: user2AccountInfo.owner,
+      rentEpoch: 0,
+    }, TOKEN_2022_PROGRAM_ID);
+
+    assert.equal(user1Account.amount, 900n, "User1 balance should be 900 after transfer");
+    assert.equal(user2Account.amount, 600n, "User2 balance should be 600 after transfer");
+
+    console.log("User1 balance after transfer:", user1Account.amount.toString());
+    console.log("User2 balance after transfer:", user2Account.amount.toString());
   });
 });

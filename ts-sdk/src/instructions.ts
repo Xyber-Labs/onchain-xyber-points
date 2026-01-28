@@ -24,6 +24,7 @@ export const OnchainXyberPointsSDK = {
       authority: web3.PublicKey;
       recipient: web3.PublicKey;
       amount: BN;
+      nonce: BN;
       signers: web3.Keypair[];
     }): Promise<string> {
       const tx = await txBuilder.mintPointsTx(args);
@@ -34,6 +35,7 @@ export const OnchainXyberPointsSDK = {
       // PDA Helpers
       getConfigPda: txBuilder.getConfigPda.bind(txBuilder),
       getPointsMintPda: txBuilder.getPointsMintPda.bind(txBuilder),
+      getNoncePda: txBuilder.getNoncePda.bind(txBuilder),
 
       // Initialize
       initializeIx: txBuilder.initializeIx.bind(txBuilder),
