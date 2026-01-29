@@ -8,8 +8,8 @@ use anchor_spl::{
 use crate::{
     errors::ErrorCode,
     instructions::initialize::Config,
-    state::{Nonce, NONCE_SEED},
-    POINTS_MINT_SEED, SEED_ROOT,
+    POINTS_MINT_SEED,
+    SEED_ROOT, state::{Nonce, NONCE_SEED},
 };
 
 #[event]
@@ -23,7 +23,7 @@ pub struct PointsMinted {
 #[derive(Accounts)]
 #[instruction(amount: u64, nonce: u64)]
 pub struct MintPoints<'info> {
-    #[account(mut, address = config.minter @ ErrorCode::Unauthorized)]
+    #[account(mut, signer, address = config.minter @ ErrorCode::Unauthorized)]
     pub authority: Signer<'info>,
 
     #[account(seeds = [SEED_ROOT, b"config"], bump)]
@@ -42,11 +42,12 @@ pub struct MintPoints<'info> {
     pub points_mint: InterfaceAccount<'info, Mint>,
 
     /// CHECK: Can be any account that will receive points
-    pub recipient: UncheckedAccount<'info>,
+    #[account(mut, signer)]
+    pub recipient: Signer<'info>,
 
     #[account(
         init_if_needed,
-        payer = authority,
+        payer = recipient,
         associated_token::mint = points_mint,
         associated_token::authority = recipient,
         associated_token::token_program = token_program
