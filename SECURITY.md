@@ -59,7 +59,6 @@ Xg7dpR5JwJTx/Z1Ct6YFIJLGnOmmrNegMzYE3pu2AQ==
 
 - [security.pub.asc](./security.pub.asc) in this repository
 - https://xyber.inc/security/security.pub.asc
-- https://raw.githubusercontent.com/Xyber-Labs/onchain-xyber-points/mainnet/security.pub.asc
 - keys.openpgp.org (email verified): `gpg --keyserver keys.openpgp.org --recv-keys 86B13B5B33BEE45A4FBFD22887034BF0A24D1A22`
 
 ### 3. Discord
