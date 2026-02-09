@@ -1014,7 +1014,6 @@ dependencies = [
  "anchor-lang",
  "anchor-spl",
  "blake3",
- "solana-security-txt",
  "spl-token-2022 10.0.0",
  "spl-token-metadata-interface 0.5.1",
  "spl-type-length-value 0.6.0",

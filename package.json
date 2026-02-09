@@ -8,6 +8,8 @@
   },
   "dependencies": {
     "@coral-xyz/anchor": "^0.31.1",
+    "@solana-program/program-metadata": "^0.5.1",
+    "@solana/kit": "^6.0.1",
     "@solana/spl-token": "^0.4.9",
     "@solana/web3.js": "^1.95.8",
     "commander": "^12.1.0"
