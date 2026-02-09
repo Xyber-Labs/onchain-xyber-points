@@ -1,0 +1,25 @@
+{
+  "name": "Onchain Xyber Points",
+  "logo": "https://ib4jmsp5fz57wjy53pzc7bugecelivqezoclfyqbnhnnsc5cdvda.arweave.net/QHiWSf0ue_snHdvyL4aGIIi0VgTLhLLiAWna2QuiHUY",
+  "description": "Onchain Xyber Points (OXP) is a Solana program for managing onchain points and rewards in the Xyber ecosystem",
+  "project_url": "https://app.xyber.inc/watchtower ",
+  "contacts": [
+    "email:security@xyber.inc",
+    "discord:channels/1352248408634687623/1352275383524790332"
+  ],
+  "policy": "https://xyber.inc/.well-known/security.txt",
+  "encryption": [
+    "https://xyber.inc/security/security.pub.asc",
+    "openpgp4fpr:86B13B5B33BEE45A4FBFD22887034BF0A24D1A22"
+  ],
+  "preferred_languages": [
+    "en",
+    "ru"
+  ],
+  "source_code": "https://github.com/Xyber-Labs/onchain-xyber-points",
+  "source_release": "v0.1.0",
+  "auditors": [],
+  "acknowledgements": [],
+  "expiry": "2026-12-31",
+  "version": "0.1.0"
+}
