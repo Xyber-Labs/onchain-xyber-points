@@ -12,8 +12,6 @@ implementations.
 
 ## Reporting a Vulnerability
 
-See [REPORTING_GUIDE.md](./REPORTING_GUIDE.md) for detailed instructions on encrypted communication.
-
 - **DO NOT** create public GitHub issues for security vulnerabilities
 - **DO NOT** disclose vulnerabilities publicly before coordinated disclosure
 - **DO NOT** exploit vulnerabilities beyond proof of concept
