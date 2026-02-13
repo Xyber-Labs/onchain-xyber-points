@@ -32,25 +32,14 @@ Keep this terminal open.
 
 ## Deployment Steps
 
-### 1. Build the Program
-
-Build the program:
+### 1. Build the Program and SDK
 
 ```bash
 anchor build -- --features localnet
+cp target/idl/onchain_xyber_points.json target/types/onchain_xyber_points.ts ts-sdk/idl/ && cd ts-sdk && yarn build && npm link && cd ..
 ```
 
-### 2. Deploy the Program
-
-Deploy the onchain-xyber-points program:
-
-```bash
-anchor deploy --provider.wallet ${CLUSTER}/deployer.json --provider.cluster ${CLUSTER} --program-name onchain_xyber_points --program-keypair ${CLUSTER}/xyber-points.json
-```
-
-### 3. Setup: Airdrop SOL to Wallets
-
-Before initializing the program, ensure all wallets have sufficient SOL:
+### 2. Airdrop SOL to Wallets
 
 ```bash
 solana airdrop 100 $(solana address -k ${CLUSTER}/deployer.json) --url ${SCLUSTER}
@@ -58,6 +47,14 @@ solana airdrop 100 $(solana address -k ${CLUSTER}/admin.json) --url ${SCLUSTER}
 solana airdrop 100 $(solana address -k ${CLUSTER}/minter.json) --url ${SCLUSTER}
 solana airdrop 10 $(solana address -k ${CLUSTER}/user1.json) --url ${SCLUSTER}
 solana airdrop 10 $(solana address -k ${CLUSTER}/user2.json) --url ${SCLUSTER}
+```
+
+### 3. Deploy the Program
+
+Deploy the onchain-xyber-points program:
+
+```bash
+anchor deploy --provider.wallet ${CLUSTER}/deployer.json --provider.cluster ${CLUSTER} --program-name onchain_xyber_points --program-keypair ${CLUSTER}/xyber-points.json
 ```
 
 **Important:** The `${CLUSTER}/deployer.json` keypair is required for the first initialization.
@@ -68,7 +65,7 @@ The deployer public key must match the `DEPLOYER` constant in the contract.
 Initialize the program configuration. First run must be signed by deployer:
 
 ```bash
-anchor run initialize --provider.cluster ${CLUSTER} -- \
+xyber-points --rpc-url http://localhost:8899 initialize \
   --new-admin $(solana address -k ${CLUSTER}/admin.json) \
   --new-minter $(solana address -k ${CLUSTER}/minter.json) \
   --signer-keypair ${CLUSTER}/deployer.json
@@ -77,7 +74,7 @@ anchor run initialize --provider.cluster ${CLUSTER} -- \
 For subsequent updates, use the stored admin as signer:
 
 ```bash
-anchor run initialize --provider.cluster ${CLUSTER} -- \
+xyber-points --rpc-url http://localhost:8899 initialize \
   --new-admin $(solana address -k ${CLUSTER}/admin.json) \
   --new-minter $(solana address -k ${CLUSTER}/minter.json) \
   --signer-keypair ${CLUSTER}/admin.json
@@ -106,14 +103,14 @@ Mint points to user accounts. Only the configured minter can perform this operat
 
 ```bash
 # Mint 1000 points to user1
-anchor run mint-points --provider.cluster ${CLUSTER} -- \
-  --recipient $(solana address -k ${CLUSTER}/user1.json) \
+xyber-points --rpc-url http://localhost:8899 mint-points \
+  --recipient-keypair ${CLUSTER}/user1.json \
   --amount 1000 \
   --minter-keypair ${CLUSTER}/minter.json
 
 # Mint 500 points to user2
-anchor run mint-points --provider.cluster ${CLUSTER} -- \
-  --recipient $(solana address -k ${CLUSTER}/user2.json) \
+xyber-points --rpc-url http://localhost:8899 mint-points \
+  --recipient-keypair ${CLUSTER}/user2.json \
   --amount 500 \
   --minter-keypair ${CLUSTER}/minter.json
 ```

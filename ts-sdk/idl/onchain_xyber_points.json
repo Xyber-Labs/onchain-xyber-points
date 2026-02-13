@@ -1,5 +1,5 @@
 {
-  "address": "oxp5daG6BinG1AL2W83RQmmN8tcXJqrqy3bYprLMRV8",
+  "address": "DYNpaq7XujscK29FYuQD5h8rGtxPAwNPYiB8vbuQe4R7",
   "metadata": {
     "name": "onchain_xyber_points",
     "version": "0.1.0",
@@ -266,7 +266,9 @@
           }
         },
         {
-          "name": "recipient"
+          "name": "recipient",
+          "writable": true,
+          "signer": true
         },
         {
           "name": "recipient_ata",
@@ -520,7 +522,7 @@
     {
       "name": "DEPLOYER",
       "type": "pubkey",
-      "value": "keeppCujRWx7HW8AgCL3F9CfaAM2hRKvWvNVo6iGToE"
+      "value": "8dabTUxUZCoH42Gq8r9jTyeAzjqVtj2PVS3yvPQLrueS"
     },
     {
       "name": "NONCE_SEED",

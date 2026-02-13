@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/onchain_xyber_points.json`.
  */
 export type OnchainXyberPoints = {
-  "address": "oxp5daG6BinG1AL2W83RQmmN8tcXJqrqy3bYprLMRV8",
+  "address": "DYNpaq7XujscK29FYuQD5h8rGtxPAwNPYiB8vbuQe4R7",
   "metadata": {
     "name": "onchainXyberPoints",
     "version": "0.1.0",
@@ -272,7 +272,9 @@ export type OnchainXyberPoints = {
           }
         },
         {
-          "name": "recipient"
+          "name": "recipient",
+          "writable": true,
+          "signer": true
         },
         {
           "name": "recipientAta",
@@ -526,7 +528,7 @@ export type OnchainXyberPoints = {
     {
       "name": "deployer",
       "type": "pubkey",
-      "value": "keeppCujRWx7HW8AgCL3F9CfaAM2hRKvWvNVo6iGToE"
+      "value": "8dabTUxUZCoH42Gq8r9jTyeAzjqVtj2PVS3yvPQLrueS"
     },
     {
       "name": "nonceSeed",
