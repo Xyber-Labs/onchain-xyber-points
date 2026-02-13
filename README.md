@@ -52,13 +52,30 @@ See [LOCAL_FLOW.md](LOCAL_FLOW.md) for the full local validator setup, build, de
 Build and upload the program buffer:
 
 ```bash
-anchor build
+solana-verify build
 solana-keygen new -o buffer.json --no-bip39-passphrase
 solana program write-buffer --buffer buffer.json target/deploy/onchain_xyber_points.so
 solana program set-buffer-authority $(solana address -k buffer.json) --new-buffer-authority ySdMgXww2coTrgD5Y9d595mAF2MrSzZY9unPTftgdkP
 ```
 
 [Upgrade the program via Squads multisig](https://app.squads.so/squads/ySdMgXww2coTrgD5Y9d595mAF2MrSzZY9unPTftgdkP/developer/programs/oxp5daG6BinG1AL2W83RQmmN8tcXJqrqy3bYprLMRV8)
+
+Verify the build on-chain with [solana-verify](https://github.com/Ellipsis-Labs/solana-verifiable-build):
+
+```bash
+solana-verify export-pda-tx https://github.com/Xyber-Labs/onchain-xyber-points -um \
+  --program-id oxp5daG6BinG1AL2W83RQmmN8tcXJqrqy3bYprLMRV8 \
+  --uploader ySdMgXww2coTrgD5Y9d595mAF2MrSzZY9unPTftgdkP \
+  --encoding base58 --compute-unit-price 0
+```
+
+Execute the exported transaction through Squads (import base58 tx), then submit the verification job:
+
+```bash
+solana-verify remote submit-job -u https://api.mainnet.solana.com \
+  --program-id oxp5daG6BinG1AL2W83RQmmN8tcXJqrqy3bYprLMRV8 \
+  --uploader ySdMgXww2coTrgD5Y9d595mAF2MrSzZY9unPTftgdkP
+```
 
 Update the IDL (temporarily transfer upgrade authority from Squads, upgrade IDL, transfer back):
 
