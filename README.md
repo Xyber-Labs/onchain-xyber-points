@@ -3,7 +3,7 @@
 ![oxp reoi header](https://opamto4dwx6rqznrovzer5f27gh3nvcvn65l54bdyjfvjmkicbta.arweave.net/c8DJu4O1_RhlsXVySPS6-Y-21FVvur7wI8JLVLFIEGY)
 
 <p align="center">
-  <a href="https://explorer.solana.com/address/oxp5daG6BinG1AL2W83RQmmN8tcXJqrqy3bYprLMRV8"><img src="https://img.shields.io/badge/Solana-1.0.0-brightgreen?logo=solana" alt="Solana Mainnet"></a>
+  <a href="https://explorer.solana.com/address/oxp5daG6BinG1AL2W83RQmmN8tcXJqrqy3bYprLMRV8"><img src="https://img.shields.io/badge/Solana-Mainnet-brightgreen?logo=solana" alt="Solana Mainnet"></a>
   <a href="https://www.anchor-lang.com/"><img src="https://img.shields.io/badge/Anchor-0.31.1-blue?logo=anchor" alt="Anchor"></a>
   <a href="https://www.npmjs.com/package/@xyber-labs/xyber-points"><img src="https://img.shields.io/npm/v/@xyber-labs/xyber-points?logo=npm" alt="npm"></a>
   <a href="https://github.com/RichardLitt/standard-readme"><img src="https://img.shields.io/badge/readme%20style-standard-brightgreen.svg" alt="standard-readme compliant"></a>
