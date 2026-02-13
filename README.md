@@ -14,7 +14,7 @@
 
 TypeScript SDK and CLI for onchain-xyber-points Solana program.
 
-Onchain Xyber Points is the on-chain backbone of Xyber's Engagement Hub — a gated community platform where users connect a wallet, pass an invite-code whitelist check and earn XP by completing quests (social follows, retweets, Discord joins, referrals). The Solana program (Token-2022) mints non-transferable XP tokens to recipient wallets, with a nonce-based replay protection per recipient. A designated minter backend credits XP instantly after quest validation, while an admin role controls program configuration. The points drive a live leaderboard, tiered access levels (Ghost / Fractal / Archivist) and a referral system where inviters receive a share of their invitees' XP.
+Onchain Xyber Points is the on-chain backbone of Xyber's Engagement Hub — a gated community platform where users connect a wallet, pass an invite-code whitelist check and earn XP by completing quests (social follows, retweets, Discord joins, referrals). The Solana program (Token-2022) mints XP tokens to recipient wallets, with a nonce-based replay protection per recipient. A designated minter backend credits XP instantly after quest validation, while an admin role controls program configuration. The points drive a live leaderboard, tiered access levels (Ghost / Fractal / Archivist) and a referral system where inviters receive a share of their invitees' XP.
 
 ## Dependencies
 
