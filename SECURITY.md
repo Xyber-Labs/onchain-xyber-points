@@ -1,5 +1,7 @@
 # Security Policy
 
+[![Security Policy](https://img.shields.io/badge/Security_Policy-Solana_Explorer-blue?logo=solana)](https://explorer.solana.com/address/oxp5daG6BinG1AL2W83RQmmN8tcXJqrqy3bYprLMRV8/security)
+
 ## Scope
 
 This security policy applies to all Xyber smart contracts deployed on Solana, related infrastructure, and SDK
